@@ -8,6 +8,8 @@ assert.ok(verificationEvent([event('node verify.mjs',0)]));
 assert.ok(verificationEvent([event("/bin/zsh -lc 'node verify.mjs'",0)]));
 assert.ok(verificationEvent([event('cd /tmp/project && node verify.mjs',0)]));
 assert.equal(verificationEvent([event('echo node verify.mjs',0)]),undefined);
+assert.ok(verificationEvent([event("/bin/zsh -lc 'cat > a <<EOF\nvalue\nEOF\nnode verify.mjs'",0)]));
+assert.equal(verificationEvent([event("/bin/zsh -lc 'cat > a <<EOF\nnode verify.mjs'",0)]),undefined);
 assert.equal(verificationEvent([event('node verify.mjs',0),event('node verify.mjs',1)]),undefined);
 assert.ok(verificationEvent([event('node verify.mjs',1),event('node verify.mjs',0)]));
 const tmp=await mkdtemp(path.join(os.tmpdir(),'dojo-build-check-'));
