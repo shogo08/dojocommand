@@ -38,3 +38,7 @@
 .artwork-approval {padding:14px; border:1px solid #224247; border-radius:8px;}
 .artwork-approval textarea {min-height:70px;}
 .artwork-approval .primary {width:100%;}
+
+.build-delivery {padding:14px; border:1px solid #224247; border-radius:8px;}
+.project-path {display:block;overflow-wrap:anywhere;color:#96dde0;margin-bottom:12px;}
+.verification-output {white-space:pre-wrap;overflow-wrap:anywhere;max-height:220px;overflow:auto;font-size:12px;}

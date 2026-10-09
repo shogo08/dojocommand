@@ -49,3 +49,16 @@ The app uses React, vinext/Vite and Cloudflare-compatible D1 storage. `.openai/h
 Enable **Automatic Backlog pickup** on the mission board to run eligible research and artwork missions after the existing queue. The worker polls every 10 seconds; the board refreshes every 6 seconds. The worker picks one Backlog mission at a time even while the browser is closed. Turn the toggle off to pause new Backlog pickups; manually queued and already running missions continue. Subscription limits still apply.
 
 Goals, founder tasks, general implementation work, missions with existing deliveries, failed/previously attempted missions, and missions with incomplete prerequisites are held. Automatic runs return to Review, never directly to Done. Prerequisites can be stored as `dependsOn` task IDs and `requiredTodoIds` founder-action IDs. Known prototype-review and publishing dependencies are preserved for older saved missions. Interrupted delivery uploads are retried from saved local files.
+
+## Approved build sessions
+
+
+The worker now supports local build jobs using the signed-in Codex CLI, workspace-write sandbox, real shell/file tools, machine-readable events and structured delivery. No API key fallback is used. Build outputs go to `~/Projects/DOJO-<venture>/<job-id>/`, keeping each session separate from existing projects. Builds use synthetic inputs and local files; account creation, publication, spending and transactions remain founder actions.
+
+Accepting a plan with linked builds automatically authorizes those builds. Existing Competitor Pulse and Bid Radar plan/build links are supported, including plans accepted before the upgrade. Other reports offer **Approve report & build a prototype**, which creates an approved linked build. New local build missions have **Approve & start build**. Direct build approval queues immediately. Approved linked builds are picked up independently of the research/artwork Backlog toggle. Missing prerequisites still block pickup.
+
+A successful delivery requires actual implementation files, a `verify.mjs` harness, a recorded successful `node verify.mjs` command event, and a downloadable ZIP containing only verified deliverable files. Builds return to Review. **Accept verified build** records the project and verification evidence before Done. Failed runs remain open for an explicit retry. General build jobs have a 20-minute execution timeout; interrupted claims expire after 30 minutes.
+
+Created work has a **Built projects** category showing project paths, bundles and verification output. Suggested founder actions from builds are added to the venture to-do list. The original saved reports remain available. Automatic execution does not establish customer demand, publish a site, or complete the venture goal.
+
+Checks: `node scripts/test-backlog.mjs` and `node worker/test-build-runner.mjs` for the local split-folder setup.
