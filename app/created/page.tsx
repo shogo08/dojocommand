@@ -7,7 +7,7 @@ import {Dialog,DialogContent,DialogTitle,DialogDescription} from '@/components/u
 type Item={id:string;title:string;category:string;venture:string;status:string;text?:string;url?:string;name?:string};
 export default function CreatedWork(){
  const [data,setData]=useState<any>(null),[error,setError]=useState(''),[category,setCategory]=useState('All'),[venture,setVenture]=useState('all'),[detail,setDetail]=useState<Item|null>(null);
- async function load(){try{const r=await fetch('/api/studio');const b=await r.json();if(!r.ok)throw Error(b.error);setData(b.state);setError('')}catch(e){setError((e as Error).message)}}
+ async function load(){try{const r=await fetch('/api/studio');const b:any=await r.json();if(!r.ok)throw Error(b.error);setData(b.state);setError('')}catch(e){setError((e as Error).message)}}
  useEffect(()=>{load();const timer=setInterval(load,10000);return()=>clearInterval(timer)},[]);
  const ventures=portfolio(data);const items:Item[]=[];const seen=new Set<string>();
  function add(item:Item){const content=item.url||item.text;const key=item.venture+":"+content;if(!content||seen.has(key))return;seen.add(key);items.push(item)}

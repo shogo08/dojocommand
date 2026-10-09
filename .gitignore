@@ -49,3 +49,5 @@ next-env.d.ts
 /worker/worker-config.json
 /worker/runs/
 *.log
+
+/.dojo-service/

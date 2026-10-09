@@ -1,4 +1,5 @@
 import { portfolio, roles } from './seed';
+import {backlogBlocker} from './automation';
 export function queueTask(state:any, task:any) {
  const ventures=portfolio(state);
  if(task.kind==='goal'||['assisted','founder'].includes(task.execution))throw new Error('This task needs actual implementation, not the report worker.');
@@ -13,4 +14,13 @@ export function queueTask(state:any, task:any) {
 }
 export function dispatchReadyTransitions(next:any, previous:any){
  for(const task of next.tasks){const before=previous.tasks.find((t:any)=>t.id===task.id);if(task.stage==='Ready'&&(!before||before.stage!=='Ready'))queueTask(next,task);}
+}
+export function dispatchAutomaticBacklog(state:any, capabilities:any){
+ if(state.automation?.backlog !== true || state.jobs?.some((j:any)=>['queued','running'].includes(j.status)))return false;
+ const task=state.tasks.find((t:any)=>t.stage==='Backlog' && !backlogBlocker(state,t,capabilities));
+ if(!task)return false;
+ queueTask(state,task);
+ state.jobs[state.jobs.length-1].automatic=true;
+ state.activity.unshift({id:crypto.randomUUID(),text:`Automatic backlog pickup: ${task.title}`,at:new Date().toISOString()});
+ return true;
 }

@@ -41,3 +41,11 @@ Local venture state lives in the ignored `.wrangler` database. This repository c
 ## Hosting
 
 The app uses React, vinext/Vite and Cloudflare-compatible D1 storage. `.openai/hosting.json` identifies the existing private ChatGPT Sites project. GitHub is source backup; pushing does not publish the dashboard. ChatGPT Sites deployment was blocked by the desktop approval policy at the time of this source save. A hosted dashboard also needs a securely configured Mac worker and durable uploads for new generated files; the local public-file copy route is intended for local operation.
+
+## Automatic local operation
+
+`node scripts/dojo-autostart.mjs install` installs two per-user macOS login services: `com.dojo.command.server` and `com.dojo.command.worker`. They run at login, monitor the local dashboard/worker, and restart after an exit. Logs live in `.dojo-service/server.log` and `.dojo-service/worker.log`. Use `node scripts/dojo-autostart.mjs status` to inspect them and `node scripts/dojo-autostart.mjs remove` to disable and uninstall them. Keep this checkout at its installed path. No Terminal window is needed once installed. The Mac must be awake, signed in and online; queued work waits during sleep and resumes afterward.
+
+Enable **Automatic Backlog pickup** on the mission board to run eligible research and artwork missions after the existing queue. The worker polls every 10 seconds; the board refreshes every 6 seconds. The worker picks one Backlog mission at a time even while the browser is closed. Turn the toggle off to pause new Backlog pickups; manually queued and already running missions continue. Subscription limits still apply.
+
+Goals, founder tasks, general implementation work, missions with existing deliveries, failed/previously attempted missions, and missions with incomplete prerequisites are held. Automatic runs return to Review, never directly to Done. Prerequisites can be stored as `dependsOn` task IDs and `requiredTodoIds` founder-action IDs. Known prototype-review and publishing dependencies are preserved for older saved missions. Interrupted delivery uploads are retried from saved local files.

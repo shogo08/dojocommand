@@ -1,6 +1,11 @@
 #!/bin/zsh
 DOJO_PROJECT_DIR="${0:A:h}"
 cd "$DOJO_PROJECT_DIR" || exit 1
+if /bin/launchctl print "gui/$(id -u)/com.dojo.command.worker" >/dev/null 2>&1; then
+ open http://127.0.0.1:5173/
+ print "DOJO runs automatically in the background. This window can close."
+ exit 0
+fi
 if ! curl --silent --fail http://127.0.0.1:5173/api/studio >/dev/null; then
  npm run dev &
  DOJO_SERVER_PID=$!
