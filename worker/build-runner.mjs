@@ -12,7 +12,7 @@ export function verificationEvent(events){const last=events.map(e=>e.item).filte
  const lines=command.split('\n').map(line=>line.trim());
  const markers=[...command.matchAll(/<<\s*['"]?([A-Za-z_][A-Za-z0-9_]*)['"]?/g)].map(m=>m[1]);
  const closed=markers.every(marker=>lines.slice(0,-1).includes(marker));
- return closed&&(lines.at(-1)==='node verify.mjs'||(/^cd [^;&\n]+ && node verify\.mjs$/.test(command))); 
+ return closed&&(lines.at(-1)==='node verify.mjs'||(/^cd [^;&\n]+ && node verify\.mjs$/.test(command)));
 }).at(-1);return last?.exit_code===0?last:undefined;}
 
 export async function verifiedFiles(project,files){
